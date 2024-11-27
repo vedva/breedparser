@@ -1,4 +1,4 @@
-package org.breeds
+package org.breed
 
 class Breed {
     String name
