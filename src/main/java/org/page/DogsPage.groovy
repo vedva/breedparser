@@ -1,8 +1,6 @@
 package org.page
 
 import org.breed.Breed
-import org.openqa.selenium.By
-import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.webservice.WebServiceI
 
@@ -31,7 +29,7 @@ class DogsPage {
     }
 
 
-    List<Breed> collectBreedsInfo() {
+    List<Breed> collectBreedsInfoFromOnePage() {
         List<Breed> result = []
         List<WebElement> breedBoxes = webService.findElements(breedBoxXpath)
         for (int i = 0; i < breedBoxes.size(); i++) {
@@ -62,7 +60,7 @@ class DogsPage {
     List<Breed> collectAllBreeds() {
         List<Breed> allBreeds = []
         for (int i = 0; i < 5; i++) {
-            allBreeds.addAll(collectBreedsInfo())
+            allBreeds.addAll(collectBreedsInfoFromOnePage())
             clickNextButton()
             if (!clickNextButton()) {
                 break
