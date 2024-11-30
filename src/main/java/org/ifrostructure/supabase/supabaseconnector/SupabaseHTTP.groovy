@@ -34,13 +34,40 @@ public class SupabaseHTTP implements SupabaseHTTPI {
             HttpRequest request = requestBuilder.build()
             // Send the request and get the response
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
-            // Return the response body
             return response
         } catch (Exception e) {
             e.printStackTrace()
             return null
         }
     }
+
+
+    HttpResponse postRequest(String url, String body, Map<String, String> headers) {
+        try {
+            // Build query parameters
+           String fullUrl = supabaseUrl + url
+
+            // Build the request
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(new URI(fullUrl))
+                    .POST(HttpRequest.BodyPublishers.ofString(body))
+
+            // Add headers
+            headers?.each { key, value ->
+                requestBuilder.header(key, value)
+            }
+            requestBuilder.header("apikey", this.apiKey)
+            HttpRequest request = requestBuilder.build()
+            // Send the request and get the response
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
+            return response
+        } catch (Exception e) {
+            e.printStackTrace()
+            return null
+        }
+
+    }
+
 
 }
 
