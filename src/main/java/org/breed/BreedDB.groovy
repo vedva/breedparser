@@ -2,27 +2,29 @@ package org.breed
 
 class BreedDB {
     Integer id
-    String name
+    String breed
     String image
     String link
     String article
 
-    BreedDB(Integer id, String name, String image, String link, String article) {
+    BreedDB(Integer id, String breed, String image, String link, String article) {
         this.id = id
-        this.name = name
+        this.breed = breed
         this.image = image
         this.link = link
         this.article = article
     }
 
+
     @Override
      String toString() {
         return "BreedDB{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", breed='" + breed + '\'' +
                 ", image='" + image + '\'' +
                 ", link='" + link + '\'' +
                 ", article='" + article + '\'' +
                 '}';
     }
+
 }
