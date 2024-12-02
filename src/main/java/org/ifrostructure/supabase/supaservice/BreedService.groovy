@@ -56,7 +56,7 @@ class BreedService {
 
     }
 
-    String postAllBreedsToSupa(List<Breed> breeds){
+    String postAllBreedsToSupa(List<Breed> breeds) {
         String body = toJsonBody(breeds)
         HttpResponse<String> response = sc.postRequest(END_POINT, body, [:])
         if (response == null) {
@@ -64,10 +64,26 @@ class BreedService {
             return []
         }
         if (response.statusCode() != 201) {
-            println "ERROR: Status code is not 200: ${response.statusCode()}"
+            println "ERROR: Status code is not 201: ${response.statusCode()}"
             return []
         }
         return println("breeds are added, status code is ${response.statusCode()}")
+
+    }
+
+    HttpResponse deleteBreedsFromSupa(Map<String, String> params) {
+
+        HttpResponse<String> response = sc.deleteRequest(END_POINT, [:], params)
+        if (response == null) {
+            println "ERROR: HTTPResponse is null"
+            return []
+        }
+        if (response.statusCode() != 204) {
+            println "ERROR: Status code is not 204: ${response.statusCode()}"
+            return []
+        }
+        println("breeds are deleted, status code is ${response.statusCode()}")
+        return response
 
     }
 

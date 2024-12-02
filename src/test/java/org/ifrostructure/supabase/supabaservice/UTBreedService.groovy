@@ -8,6 +8,8 @@ import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import org.utiles.EnvReader
 
+import java.net.http.HttpResponse
+
 class UTBreedService {
     private static final String TEST_SUPABASE_URL = EnvReader.getEnvVar("SUPABASE_URL")
     private static final String TEST_API_KEY = EnvReader.getEnvVar("SUPABASE_PUBLIC_KEY")
@@ -23,6 +25,8 @@ class UTBreedService {
     void testGetBreedDB() {
         BreedService breedService = new BreedService(supabaseHTTP)
         List<BreedDB> breedsDB = breedService.getAllBreedsFromSupa()
+
+        assert breedsDB != null: "The result should not be null"
         println(breedsDB)
 
     }
@@ -37,6 +41,23 @@ class UTBreedService {
         ]
         breedService.postAllBreedsToSupa(breeds)
 
+        List<BreedDB> breedsDB = breedService.getAllBreedsFromSupa()
+        assert breedsDB != null: "The result should not be null"
+        println(breedsDB)
+
 
     }
+
+    @Test
+    void testDeleteBreed() {
+        BreedService breedService = new BreedService(supabaseHTTP)
+        Map<String, String> params = [id: "in.(61,62,63)"] //add correct id(s)
+        HttpResponse<String> response = breedService.deleteBreedsFromSupa(params)
+        assert response != null: "Response should not be null"
+        assert response.statusCode() == 204: "Expected HTTP status 204 but got ${response.statusCode()}"
+
+        println "Response Code: ${response.statusCode()}"
+
+    }
+
 }
