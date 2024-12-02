@@ -1,4 +1,4 @@
-package org.ifrostructure.supabase.supabaseconnector
+package org.infrostructure.connector
 
 import java.net.http.HttpResponse
 

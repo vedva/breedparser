@@ -1,12 +1,10 @@
 package org.procedure
 
 import org.breed.Breed
-import org.ifrostructure.supabase.supabaseconnector.SupabaseHTTP
-import org.ifrostructure.supabase.supaservice.BreedService
-import org.page.DogsPage
+import org.infrostructure.connector.SupabaseHTTP
+import org.infrostructure.service.BreedHTTPService
 import org.parser.ParserSelenium
 import org.utiles.EnvReader
-import org.webservice.WebService
 
 class ParseSeleniumStoreSupaHTTP {
 
@@ -29,7 +27,7 @@ class ParseSeleniumStoreSupaHTTP {
 //        wb.quiteWebDriver()
 
         List<Breed> breeds = parserSelenium.parseBreedsSelenium()
-        BreedService breedService = new BreedService(supabaseHTTP)
+        BreedHTTPService breedService = new BreedHTTPService(supabaseHTTP)
         breedService.postAllBreedsToSupa(breeds)
 
     }

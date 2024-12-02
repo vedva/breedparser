@@ -1,17 +1,17 @@
-package org.ifrostructure.supabase.supaservice
+package org.infrostructure.service
 
 import groovy.json.JsonSlurper
 import org.breed.Breed
 import org.breed.BreedDB
-import org.ifrostructure.supabase.supabaseconnector.SupabaseHTTPI
+import org.infrostructure.connector.SupabaseHTTPI
 
 import java.net.http.HttpResponse
 
-class BreedService {
+class BreedHTTPService {
     private final static String END_POINT = "/rest/v1/dogs"
     private SupabaseHTTPI sc;
 
-    BreedService(SupabaseHTTPI sc) {
+    BreedHTTPService(SupabaseHTTPI sc) {
         this.sc = sc
     }
 

@@ -1,10 +1,10 @@
-package org.ifrostructure.supabase.supabaseconnector
+package org.infrostructure.connector
 
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 
-public class SupabaseHTTP implements SupabaseHTTPI {
+class SupabaseHTTP implements SupabaseHTTPI {
 
     private final String supabaseUrl
     private final String apiKey

@@ -1,16 +1,16 @@
-package org.ifrostructure.supabase.supabaservice
+package org.infrostructure.supabaservice
 
 import org.breed.Breed
 import org.breed.BreedDB
-import org.ifrostructure.supabase.supabaseconnector.SupabaseHTTP
-import org.ifrostructure.supabase.supaservice.BreedService
+import org.infrostructure.connector.SupabaseHTTP
+import org.infrostructure.service.BreedHTTPService
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import org.utiles.EnvReader
 
 import java.net.http.HttpResponse
 
-class UTBreedService {
+class UTBreedHTTPService {
     private static final String TEST_SUPABASE_URL = EnvReader.getEnvVar("SUPABASE_URL")
     private static final String TEST_API_KEY = EnvReader.getEnvVar("SUPABASE_PUBLIC_KEY")
 
@@ -23,7 +23,7 @@ class UTBreedService {
 
     @Test
     void testGetBreedDB() {
-        BreedService breedService = new BreedService(supabaseHTTP)
+        BreedHTTPService breedService = new BreedHTTPService(supabaseHTTP)
         List<BreedDB> breedsDB = breedService.getAllBreedsFromSupa()
 
         assert breedsDB != null: "The result should not be null"
@@ -33,7 +33,7 @@ class UTBreedService {
 
     @Test
     void testPostBreed() {
-        BreedService breedService = new BreedService(supabaseHTTP)
+        BreedHTTPService breedService = new BreedHTTPService(supabaseHTTP)
         List<Breed> breeds = [
                 new Breed(name: "new dog-1", image: "new image-1", link: "new link-1", article: "new article -1"),
                 new Breed(name: "new dog-2", image: "new image-2", link: "new link-2", article: "new article -2"),
@@ -50,7 +50,7 @@ class UTBreedService {
 
     @Test
     void testDeleteBreed() {
-        BreedService breedService = new BreedService(supabaseHTTP)
+        BreedHTTPService breedService = new BreedHTTPService(supabaseHTTP)
         Map<String, String> params = [id: "in.(61,62,63)"] //add correct id(s)
         HttpResponse<String> response = breedService.deleteBreedsFromSupa(params)
         assert response != null: "Response should not be null"

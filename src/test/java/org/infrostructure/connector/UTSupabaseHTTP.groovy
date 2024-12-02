@@ -1,7 +1,7 @@
-package org.ifrostructure.supabase.supabaseconnector
+package org.infrostructure.connector
 
 import org.breed.Breed
-import org.ifrostructure.supabase.supaservice.BreedService
+import org.infrostructure.service.BreedHTTPService
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
 import org.utiles.EnvReader
@@ -47,7 +47,7 @@ class UTSupabaseHTTP {
                 new Breed(name: "new dog-3", image: "new image-3", link: "new link-3", article: "new article -3")
         ]
 
-        String jsonBody = BreedService.toJsonBody(breeds)
+        String jsonBody = BreedHTTPService.toJsonBody(breeds)
         println jsonBody
         HttpResponse<String> response = supabaseHTTP.postRequest(endpoint, jsonBody, headers)
 
