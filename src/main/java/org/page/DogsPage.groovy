@@ -1,6 +1,6 @@
 package org.page
 
-import org.breed.Breed
+import org.breed.BreedParser
 import org.openqa.selenium.WebElement
 import org.webservice.WebServiceI
 
@@ -29,12 +29,12 @@ class DogsPage {
     }
 
 
-    List<Breed> collectBreedsInfoFromOnePage() {
-        List<Breed> result = []
+    List<BreedParser> collectBreedsInfoFromOnePage() {
+        List<BreedParser> result = []
         List<WebElement> breedBoxes = webService.findElements(breedBoxXpath)
         for (int i = 0; i < breedBoxes.size(); i++) {
             WebElement breedBox = breedBoxes.get(i)
-            Breed breed = new Breed()
+            BreedParser breed = new BreedParser()
 
             def nameElement = webService.findElementInElement(breedBox, breedNameXpath)
             breed.name = webService.getText(nameElement)
@@ -57,8 +57,8 @@ class DogsPage {
         }
     }
 
-    List<Breed> collectAllBreeds() {
-        List<Breed> allBreeds = []
+    List<BreedParser> collectAllBreeds() {
+        List<BreedParser> allBreeds = []
         for (int i = 0; i < 5; i++) {
             allBreeds.addAll(collectBreedsInfoFromOnePage())
             clickNextButton()
@@ -87,11 +87,11 @@ class DogsPage {
     }
 
 
-    List<Breed> getAllBreedsWithArticle() {
-        List<Breed> allBreeds = collectAllBreeds()
+    List<BreedParser> getAllBreedsWithArticle() {
+        List<BreedParser> allBreeds = collectAllBreeds()
 
         for (int i = 0; i < allBreeds.size(); i++) {
-            Breed breed = allBreeds.get(i)
+            BreedParser breed = allBreeds.get(i)
             webService.navigateToPage(breed.link)
             breed.article = parseArticle()
         }

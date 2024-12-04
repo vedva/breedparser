@@ -1,19 +1,22 @@
 package org.infrostructure.connector
 
+import org.utiles.EnvReader
+
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 
 class SupabaseHTTP implements SupabaseHTTPI {
 
-    private final String supabaseUrl
-    private final String apiKey
+    String SUPABASE_URL = EnvReader.getEnvVar("SUPABASE_URL")
+    String API_KEY = EnvReader.getEnvVar("SUPABASE_PUBLIC_KEY")
     private HttpClient httpClient;
 
     // Constructor
-    SupabaseHTTP(String supabaseUrl, String apiKey) {
-        this.supabaseUrl = supabaseUrl;
-        this.apiKey = apiKey;
+    //TODO replace parames with .env reading inside constructor
+    SupabaseHTTP() {
+        this.SUPABASE_URL = SUPABASE_URL;
+        this.API_KEY = API_KEY;
         this.httpClient = HttpClient.newHttpClient();
     }
 
@@ -21,7 +24,7 @@ class SupabaseHTTP implements SupabaseHTTPI {
         try {
             // Build query parameters
             String queryParams = params?.collect { key, value -> "${key}=${URLEncoder.encode(value, 'UTF-8')}" }?.join('&')
-            String fullUrl = supabaseUrl + url + (queryParams ? "?${queryParams}" : "")
+            String fullUrl = SUPABASE_URL + url + (queryParams ? "?${queryParams}" : "")
             // Build the request
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .uri(new URI(fullUrl))
@@ -30,7 +33,7 @@ class SupabaseHTTP implements SupabaseHTTPI {
             headers?.each { key, value ->
                 requestBuilder.header(key, value)
             }
-            requestBuilder.header("apikey", this.apiKey) // Example of adding an API key header
+            requestBuilder.header("apikey", this.API_KEY) // Example of adding an API key header
             HttpRequest request = requestBuilder.build()
             // Send the request and get the response
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
@@ -44,14 +47,14 @@ class SupabaseHTTP implements SupabaseHTTPI {
 
     HttpResponse postRequest(String url, String body, Map<String, String> headers) {
         try {
-            String fullUrl = supabaseUrl + url
+            String fullUrl = SUPABASE_URL + url
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .uri(new URI(fullUrl))
                     .POST(HttpRequest.BodyPublishers.ofString(body))
             headers?.each { key, value ->
                 requestBuilder.header(key, value)
             }
-            requestBuilder.header("apikey", this.apiKey)
+            requestBuilder.header("apikey", this.API_KEY)
             HttpRequest request = requestBuilder.build()
             // Send the request and get the response
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
@@ -67,7 +70,7 @@ class SupabaseHTTP implements SupabaseHTTPI {
     HttpResponse deleteRequest(String url, Map<String, String> headers, Map<String, String> params) {
         try {
             String queryParams = params?.collect { key, value -> "${key}=${URLEncoder.encode(value, 'UTF-8')}" }?.join('&')
-            String fullUrl = supabaseUrl + url + (queryParams ? "?${queryParams}" : "")
+            String fullUrl = SUPABASE_URL + url + (queryParams ? "?${queryParams}" : "")
 
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                     .uri(new URI(fullUrl))
@@ -76,7 +79,7 @@ class SupabaseHTTP implements SupabaseHTTPI {
             headers?.each { key, value ->
                 requestBuilder.header(key, value)
             }
-            requestBuilder.header("apikey", this.apiKey)
+            requestBuilder.header("apikey", this.API_KEY)
             HttpRequest request = requestBuilder.build()
             // Send the request and get the response
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString())
@@ -85,7 +88,6 @@ class SupabaseHTTP implements SupabaseHTTPI {
             e.printStackTrace()
             return null
         }
-
     }
 
 }
