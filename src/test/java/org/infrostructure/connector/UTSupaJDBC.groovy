@@ -7,10 +7,11 @@ class UTSupaJDBC {
 
     @Test
     void testConnectionToSupa() {
+        SupaJDBC s = new SupaJDBC()
         def query = "SELECT * FROM dogs;"
-        List<Map> result= SupaJDBC.executeSelect(query)
+        List<Map> result= s.executeSelect(query)
         for(dog in result){
-            println(dog.id+1)
+            println(dog.id)
         }
 
     }

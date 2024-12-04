@@ -1,18 +1,30 @@
 package org.breed
 
 class Breed {
-    String name
+    Integer id
+    String breed
     String image
     String link
     String article
 
+    Breed(Integer id, String breed, String image, String link, String article) {
+        this.id = id
+        this.breed = breed
+        this.image = image
+        this.link = link
+        this.article = article
+    }
+
 
     @Override
-    public String toString() {
-        return "{name: $this.name, image: $this.image, link: $this.link, article: $this.article}"
+     String toString() {
+        return "BreedDB{" +
+                "id=" + id +
+                ", breed='" + breed + '\'' +
+                ", image='" + image + '\'' +
+                ", link='" + link + '\'' +
+                ", article='" + article + '\'' +
+                '}';
     }
 
-    String stringToJson(){
-        return "{\"breed\": \"$this.name\", \"image\": \"$this.image\", \"link\": \"$this.link\", \"article\": \"$this.article\"}"
-    }
 }

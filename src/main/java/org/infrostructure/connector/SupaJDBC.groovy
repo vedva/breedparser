@@ -7,12 +7,12 @@ import org.utiles.EnvReader
 import java.sql.Connection
 import java.sql.ResultSet
 
-class SupaJDBC {
+class SupaJDBC implements SupaJDBCI{
     private static HikariDataSource dataSource;
 
     static {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://aws-0-us-east-1.pooler.supabase.com:6543/postgres");
+        config.setJdbcUrl(EnvReader.getEnvVar("JDBC_URL"));
         config.setUsername(EnvReader.getEnvVar("SUPA_USER"));
         config.setPassword(EnvReader.getEnvVar("SUPA_PASSWORD"));
         config.setMaximumPoolSize(10);
@@ -23,7 +23,7 @@ class SupaJDBC {
         return dataSource.getConnection();
     }
 
-    static List<Map> executeSelect(String query) throws Exception {
+    List<Map> executeSelect(String query) throws Exception {
         Connection connection = getConnection();
         def statement = connection.createStatement()
         def resultSet = statement.executeQuery(query)
@@ -37,7 +37,6 @@ class SupaJDBC {
         }
 
     }
-
 
 
     private static List<Map> convertResultSetToMap(ResultSet resultSet){
@@ -55,6 +54,5 @@ class SupaJDBC {
             }
         return results
     }
-
 
 }

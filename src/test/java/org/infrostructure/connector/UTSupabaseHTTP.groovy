@@ -1,6 +1,6 @@
 package org.infrostructure.connector
 
-import org.breed.Breed
+import org.breed.BreedParser
 import org.infrostructure.service.BreedHTTPService
 import org.testng.annotations.BeforeMethod
 import org.testng.annotations.Test
@@ -10,14 +10,11 @@ import java.net.http.HttpResponse
 
 class UTSupabaseHTTP {
 
-    private static final String TEST_SUPABASE_URL = EnvReader.getEnvVar("SUPABASE_URL")
-    private static final String TEST_API_KEY = EnvReader.getEnvVar("SUPABASE_PUBLIC_KEY")
-
     private SupabaseHTTP supabaseHTTP
 
     @BeforeMethod
     void setup() {
-        supabaseHTTP = new SupabaseHTTP(TEST_SUPABASE_URL, TEST_API_KEY)
+        supabaseHTTP = new SupabaseHTTP()
     }
 
     @Test
@@ -41,10 +38,10 @@ class UTSupabaseHTTP {
 
         String endpoint = "/rest/v1/dogs"
         Map<String, String> headers = [:]
-        List<Breed> breeds = [
-                new Breed(name: "new dog-1", image: "new image-1", link: "new link-1", article: "new article -1"),
-                new Breed(name: "new dog-2", image: "new image-2", link: "new link-2", article: "new article -2"),
-                new Breed(name: "new dog-3", image: "new image-3", link: "new link-3", article: "new article -3")
+        List<BreedParser> breeds = [
+                new BreedParser(name: "new dog-1", image: "new image-1", link: "new link-1", article: "new article -1"),
+                new BreedParser(name: "new dog-2", image: "new image-2", link: "new link-2", article: "new article -2"),
+                new BreedParser(name: "new dog-3", image: "new image-3", link: "new link-3", article: "new article -3")
         ]
 
         String jsonBody = BreedHTTPService.toJsonBody(breeds)
