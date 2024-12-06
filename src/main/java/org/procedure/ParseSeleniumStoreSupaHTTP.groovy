@@ -5,7 +5,6 @@ import org.infrostructure.connector.SupabaseHTTP
 import org.infrostructure.service.BreedHTTPService
 import org.infrostructure.service.StorageFactory
 import org.infrostructure.service.StorageService
-import org.infrostructure.service.StorageServiceI
 import org.parser.ParserSelenium
 
 class ParseSeleniumStoreSupaHTTP {

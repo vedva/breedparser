@@ -3,7 +3,7 @@ package org.infrostructure.connector
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.utiles.EnvReader
-
+import java.sql.Statement
 import java.sql.Connection
 import java.sql.ResultSet
 
@@ -54,5 +54,37 @@ class SupaJDBC implements SupaJDBCI{
             }
         return results
     }
+
+
+    boolean executeInsert(String query) {
+        Connection connection = null
+        Statement statement = null
+        try {
+            // Get a connection from the pool
+            connection = getConnection()
+            statement = connection.createStatement()
+
+            // Execute the INSERT query
+            int rowsAffected = statement.executeUpdate(query)
+
+            // Check if rows were inserted
+            if (rowsAffected > 0) {
+                //println "SUCCESS: $rowsAffected row(s) inserted."
+                return true
+            } else {
+                println "WARNING: No rows were inserted."
+                return false
+            }
+        } catch (Exception e) {
+            println "ERROR: Failed to execute insert query: $e"
+            return false
+        } finally {
+            // Ensure resources are closed
+            if (statement != null) statement.close()
+            if (connection != null) connection.close()
+        }
+    }
+
+
 
 }
