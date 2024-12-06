@@ -1,5 +1,6 @@
 package org.infrostructure.supabaservice
 
+import org.breed.Breed
 import org.breed.BreedParser
 import org.infrostructure.connector.SupaJDBC
 import org.infrostructure.service.BreedJDBCService
@@ -15,7 +16,6 @@ class UTBreedJDBCServiceParser {
         BreedJDBCService bs = new BreedJDBCService(supa)
         print bs.getAllBreeds()
 
-
     }
 
     @Test
@@ -28,6 +28,18 @@ class UTBreedJDBCServiceParser {
         ]
         BreedJDBCService bs = new BreedJDBCService(supa)
         bs.addAllBreeds(breeds)
+
+    }
+
+    @Test
+    void testDeleteBreedsFromDB() {
+        supa = new SupaJDBC()
+        BreedJDBCService bs = new BreedJDBCService(supa)
+        List<Breed> selectedBreeds = new ArrayList<>()
+        List<Breed> breeds = bs.getAllBreeds()
+        selectedBreeds.addAll(breeds.take(2)) //select breeds to be deleted
+
+        print bs.deleteAllBreeds(selectedBreeds)
 
 
     }

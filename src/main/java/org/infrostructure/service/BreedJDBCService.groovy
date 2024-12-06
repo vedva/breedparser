@@ -36,8 +36,8 @@ class BreedJDBCService implements StorageServiceI {
     }
 
     boolean deleteAllBreeds(List<Breed> breeds) {
-        //TODO
-        return true
+        String query = convertBreedsToDeleteQuery(breeds)
+        return supaJDBCI.executeDelete(query)
     }
 
 
@@ -64,4 +64,31 @@ class BreedJDBCService implements StorageServiceI {
         VALUES ${values.join(",\n")};
     """
     }
+
+    private static String convertBreedsToDeleteQuery(List<Breed> breeds) {
+        if (breeds == null || breeds.isEmpty()) {
+            throw new IllegalArgumentException("Breeds list is null or empty")
+        }
+
+        // Collect breed IDs for deletion
+        List<String> ids = breeds.collect { breed ->
+            // Assuming breed.id is the identifier for deletion
+            if (breed.id == null) {
+                throw new IllegalArgumentException("Breed ID cannot be null")
+            }
+            breed.id.toString()
+        }
+
+        // Generate the final DELETE query
+        return """
+    DELETE FROM ${tableName}
+    WHERE id IN (${ids.join(", ")});
+    """
+
+    }
+
+
+
+
+
 }
