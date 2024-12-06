@@ -85,6 +85,34 @@ class SupaJDBC implements SupaJDBCI{
         }
     }
 
+    boolean executeDelete(String query) {
+        Connection connection = null
+        Statement statement = null
+        try {
+            connection = getConnection()
+            statement = connection.createStatement()
+
+            // Execute the DELETE query
+            int rowsAffected = statement.executeUpdate(query)
+
+            // Check if rows were deleted
+            if (rowsAffected > 0) {
+                println "SUCCESS: $rowsAffected row(s) deleted."
+                return true
+            } else {
+                println "WARNING: No rows were deleted."
+                return false
+            }
+        } catch (Exception e) {
+            println "ERROR: Failed to execute delete query: $e"
+            return false
+        } finally {
+            if (statement != null) statement.close()
+            if (connection != null) connection.close()
+        }
+    }
+
+
 
 
 }
