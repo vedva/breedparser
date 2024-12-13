@@ -2,23 +2,24 @@ package org.infrostructure.service
 
 import org.breed.Breed
 import org.breed.BreedParser
-import org.infrostructure.connector.SupaJDBCI
-import org.infrostructure.service.utilsservice.BreedConvertor
+import org.infrostructure.connector.SQLitI
 
-class BreedJDBCService implements StorageServiceI {
+class BreedSQLiteService implements StorageServiceI{
     private final static String query = "SELECT * FROM dogs;"
     private final static String tableName = "dogs"
     private final static List<String> columnNames = ["breed", "image", "link", "article"] // Column names to be inserted
-    private SupaJDBCI supaJDBCI
+    SQLitI sqLitI;
 
-    BreedJDBCService(SupaJDBCI supaJDBCI) {
-        this.supaJDBCI = supaJDBCI
+    BreedSQLiteService(SQLitI sqLitI){
+        this.sqLitI = sqLitI
     }
+
+
 
     List<Breed> getAllBreeds() {
         List<Map> breedsData
         try {
-            breedsData = supaJDBCI.executeSelect(query)
+            breedsData = sqLitI.executeSelect(query)
         } catch (Exception e) {
             println "ERROR: JDBC exception: $e"
             return []
@@ -31,15 +32,15 @@ class BreedJDBCService implements StorageServiceI {
         return result
     }
 
+
+
     boolean addAllBreeds(List<BreedParser> breeds) {
-        String query = BreedConvertor.convertBreedsToInsertQuery(breeds);
-        return supaJDBCI.executeInsert(query)
+
+        return true
     }
 
     boolean deleteAllBreeds(List<Breed> breeds) {
-        String query = BreedConvertor.convertBreedsToDeleteQuery(breeds)
-        return supaJDBCI.executeDelete(query)
+
+        return true
     }
-
-
 }
