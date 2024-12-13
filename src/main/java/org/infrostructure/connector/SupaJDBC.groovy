@@ -2,6 +2,7 @@ package org.infrostructure.connector
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import org.infrostructure.connector.utilsconector.Convertor
 import org.utiles.EnvReader
 import java.sql.Statement
 import java.sql.Connection
@@ -29,7 +30,7 @@ class SupaJDBC implements SupaJDBCI{
         def resultSet = statement.executeQuery(query)
 
         try {
-            return convertResultSetToMap(resultSet)
+            return Convertor.convertResultSetToMap(resultSet)
         } finally {
             resultSet.close()
             statement.close()
@@ -38,22 +39,6 @@ class SupaJDBC implements SupaJDBCI{
 
     }
 
-
-    private static List<Map> convertResultSetToMap(ResultSet resultSet){
-        List<Map> results = []
-
-            def metaData = resultSet.metaData
-            int columnCount = metaData.columnCount
-            List<String> columnNames = (1..columnCount).collect { metaData.getColumnName(it) }
-            while (resultSet.next()) {
-                Map row = [:]
-                columnNames.each { column ->
-                    row[column] = resultSet.getObject(column)
-                }
-                results.add(row)
-            }
-        return results
-    }
 
 
     boolean executeInsert(String query) {
