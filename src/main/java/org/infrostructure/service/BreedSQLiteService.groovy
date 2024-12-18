@@ -3,6 +3,7 @@ package org.infrostructure.service
 import org.breed.Breed
 import org.breed.BreedParser
 import org.infrostructure.connector.SQLitI
+import org.infrostructure.service.utilsservice.BreedConvertor
 
 class BreedSQLiteService implements StorageServiceI{
     private final static String query = "SELECT * FROM dogs;"
@@ -35,12 +36,12 @@ class BreedSQLiteService implements StorageServiceI{
 
 
     boolean addAllBreeds(List<BreedParser> breeds) {
-
-        return true
+        String query = BreedConvertor.convertBreedsToInsertQuery(breeds);
+        return sqLitI.executeInsert(query)
     }
 
     boolean deleteAllBreeds(List<Breed> breeds) {
-
-        return true
+        String query = BreedConvertor.convertBreedsToDeleteQuery(breeds)
+        return sqLitI.executeDelete(query)
     }
 }

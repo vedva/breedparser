@@ -2,19 +2,19 @@ package org.infrostructure.connector
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import org.infrostructure.connector.utilsconector.Convertor
 import org.utiles.EnvReader
 
 import java.sql.Connection
 import java.sql.PreparedStatement
-import org.infrostructure.connector.utilsconector.Convertor
 import java.sql.SQLException
-import java.sql.Statement
 
 class SQLite implements SQLitI {
 
     static final String RESURCE_DB_PATH = EnvReader.getEnvVar("RESURCE_DB_PATH");
     static final String URL_LITE = EnvReader.getEnvVar("URL_LITE") + RESURCE_DB_PATH;
     private static HikariDataSource dataSource;
+
     static {
         // Setup connection pool configuration
         HikariConfig config = new HikariConfig();
@@ -28,7 +28,6 @@ class SQLite implements SQLitI {
     static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
-
 
     //Method to execute a SELECT query and return results without params
     //using try-with resource statement that doesn't need "finally" block.
@@ -49,30 +48,14 @@ class SQLite implements SQLitI {
 
 
     boolean executeInsert(String query) {
-        Connection connection = null
-        Statement statement = null
-        try {
-            // Get a connection from the pool
-            connection = getConnection()
-            statement = connection.createStatement()
-
-            // Execute the INSERT query
-            int rowsAffected = statement.executeUpdate(query)
-
-            // Check if rows were inserted
-            if (rowsAffected > 0) {
-                //println "SUCCESS: $rowsAffected row(s) inserted."
-                return true
-            } else {
-                println "WARNING: No rows were inserted."
-                return false
-            }
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            // Execute the query (you can adjust to SELECT, UPDATE, etc. as needed)
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
         } catch (Exception e) {
             println "ERROR: Failed to execute insert query: $e"
             return false
-        } finally {
-            if (statement != null) statement.close()
-            if (connection != null) connection.close()
         }
     }
 
@@ -80,19 +63,24 @@ class SQLite implements SQLitI {
     boolean executeDelete(String query) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // Return true if rows were deleted
+        } catch (Exception e) {
+            println "ERROR: Failed to execute delete query: $e"
+            return false;
         }
     }
 
 
-        // Properly shutdown the connection pool when done
-        public static void shutdown() {
-            if (dataSource != null) {
-                dataSource.close();
-            }
-        }
+//        // Properly shutdown the connection pool when done
+//        public static void shutdown() {
+//            if (dataSource != null) {
+//                dataSource.close();
+//            }
+//        }
 
 
-        // Method to execute a query (can be used in multiple threads)
+    // Method to execute a query (can be used in multiple threads)
 //    static void executeQuery(String sql, Object[] parameters) {
 //        try (Connection connection = getConnection();
 //             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -110,5 +98,5 @@ class SQLite implements SQLitI {
 //        }
 //    }
 
-    }
+}
 
