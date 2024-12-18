@@ -7,8 +7,6 @@ import org.infrostructure.service.utilsservice.BreedConvertor
 
 class BreedJDBCService implements StorageServiceI {
     private final static String query = "SELECT * FROM dogs;"
-    private final static String tableName = "dogs"
-    private final static List<String> columnNames = ["breed", "image", "link", "article"] // Column names to be inserted
     private SupaJDBCI supaJDBCI
 
     BreedJDBCService(SupaJDBCI supaJDBCI) {
